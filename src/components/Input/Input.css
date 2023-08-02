@@ -1,0 +1,21 @@
+input {
+  color: green;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  background-color: rgba(217, 217, 217, 1);
+}
+
+input::placeholder {
+  color: rgba(68, 178, 111, 1);
+}
+
+input:focus {
+  border: 1px solid rgba(68, 178, 111, 1);
+  outline: none;
+}
+
+.form-group {
+  display: flex;
+}
