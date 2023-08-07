@@ -1,0 +1,25 @@
+.preview-button {
+  background-color: rgba(255, 255, 255, 1);
+  color: rgba(5, 188, 82, 1);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.add-button {
+  background-color: rgba(255, 255, 255, 1);
+  color: rgba(5, 188, 82, 1);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.button-icon {
+  margin-right: 5px;
+}

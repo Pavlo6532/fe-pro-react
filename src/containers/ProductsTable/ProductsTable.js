@@ -1,8 +1,33 @@
-import { FaRegUser, FaRegTrashAlt, FaRegEdit, FaPlus } from "react-icons/fa";
 import rozetka_Table from "../../assets/rozetka_table.svg";
 import "./ProductsTable.css";
+import Table from "../../components/Table/Table";
+import ProductsButton from "../../components/ProductsButton/ProductsButton";
 
-const ProductsTable = ({ products }) => {
+const ProductsTable = () => {
+  const productsData = [
+    {
+      id: 0,
+      category: "PC",
+      name: "Lenovo Y50-70",
+      quantity: 5,
+      price: "25,000.00",
+    },
+    {
+      id: 1,
+      category: "Clothes",
+      name: "Nike M Nk Df Acd21",
+      quantity: 22,
+      price: "4,000.00",
+    },
+    {
+      id: 2,
+      category: "Plumbing",
+      name: "CERSANIT Mito 17",
+      quantity: 1337,
+      price: "5,000.00",
+    },
+  ];
+
   return (
     <div className="products-container">
       <div className="table-header">
@@ -11,41 +36,11 @@ const ProductsTable = ({ products }) => {
           <img src={rozetka_Table} alt="Logo" className="logo-image" />
         </div>
         <div className="buttons">
-          <button className="preview-button">
-            <FaRegUser className="button-icon" /> Preview
-          </button>
-          <button className="add-button">
-            <FaPlus className="button-icon" /> Add Product
-          </button>
+          <ProductsButton label="Preview" />
+          <ProductsButton label="Add Product" isAddButton />
         </div>
       </div>
-      <table className="products-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Category</th>
-            <th>Name</th>
-            <th>Quantity</th>
-            <th>Price ₴</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {products.map((product) => (
-            <tr key={product.id}>
-              <td>{product.id}</td>
-              <td>{product.category}</td>
-              <td>{product.name}</td>
-              <td>{product.quantity}</td>
-              <td>{product.price}</td>
-              <td>
-                <FaRegEdit className="icon" />
-                <FaRegTrashAlt className="icon" />
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <Table products={productsData} />
     </div>
   );
 };
