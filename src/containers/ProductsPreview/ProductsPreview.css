@@ -1,0 +1,32 @@
+.products-preview {
+  padding: 20px;
+  margin-top: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.product-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  justify-content: center;
+}
+
+.logo {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+}
+
+@media (max-width: 768px) {
+  .product-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .product-cards {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
