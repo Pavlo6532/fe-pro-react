@@ -1,32 +1,18 @@
+import React, { useState, useEffect } from "react";
 import rozetka_Table from "../../assets/rozetka_table.svg";
 import "./ProductsTable.css";
 import Table from "../../components/Table/Table";
 import ProductsButton from "../../components/ProductsButton/ProductsButton";
 
 const ProductsTable = () => {
-  const productsData = [
-    {
-      id: 0,
-      category: "PC",
-      name: "Lenovo Y50-70",
-      quantity: 5,
-      price: "25,000.00",
-    },
-    {
-      id: 1,
-      category: "Clothes",
-      name: "Nike M Nk Df Acd21",
-      quantity: 22,
-      price: "4,000.00",
-    },
-    {
-      id: 2,
-      category: "Plumbing",
-      name: "CERSANIT Mito 17",
-      quantity: 1337,
-      price: "5,000.00",
-    },
-  ];
+  const [productsData, setProductsData] = useState([]);
+
+  useEffect(() => {
+    fetch("https://64db4ef3593f57e435b0c317.mockapi.io/product")
+      .then((response) => response.json())
+      .then((data) => setProductsData(data))
+      .catch((error) => console.error("Error fetching data:", error));
+  }, []);
 
   return (
     <div className="products-container">
