@@ -4,5 +4,12 @@
 }
 
 .form-group {
-  margin-bottom: 10px;
+  display: flex;
+  position: relative;
+}
+
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
 }

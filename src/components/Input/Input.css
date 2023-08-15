@@ -10,6 +10,7 @@ input {
 
 .input-container {
   position: relative;
+  min-height: 75px;
 }
 
 input::placeholder {
@@ -21,13 +22,9 @@ input:focus {
   outline: none;
 }
 
-.form-group {
-  display: flex;
-}
-
 .eye-icon {
   position: absolute;
-  top: 50%;
+  top: 28%;
   right: -35px;
   transform: translateY(-50%);
   cursor: pointer;
