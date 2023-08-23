@@ -18,10 +18,10 @@ const Table = ({ products }) => {
         {products.map((product) => (
           <tr key={product.id}>
             <td>{product.id}</td>
-            <td>{product.category}</td>
-            <td>{product.name}</td>
-            <td>{product.quantity}</td>
-            <td>{product.price}</td>
+            <td>{product.Category}</td>
+            <td>{product.Name}</td>
+            <td>{product.Quantity}</td>
+            <td>{product.Price}</td>
             <td>
               <FaRegEdit className="icon" />
               <FaRegTrashAlt className="icon" />
