@@ -1,6 +1,6 @@
-import "./ProductCard.css";
-import ProductPreview from "../../assets/lenovo-laptop-y50.png";
 import { FaShoppingCart } from "react-icons/fa";
+import ProductPreview from "../../assets/lenovo-laptop-y50.png";
+import "./ProductCard.css";
 
 const ProductCard = ({ product }) => {
   return (

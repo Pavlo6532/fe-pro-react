@@ -1,9 +1,12 @@
 import { FaRegUser, FaPlus } from "react-icons/fa";
 import "./ProductsButton.css";
 
-const ProductsButton = ({ label, isAddButton }) => {
+const ProductsButton = ({ label, isAddButton, onClick }) => {
   return (
-    <button className={isAddButton ? "add-button" : "preview-button"}>
+    <button
+      className={isAddButton ? "add-button" : "preview-button"}
+      onClick={onClick}
+    >
       {isAddButton ? (
         <FaPlus className="button-icon" />
       ) : (

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import rozetka_Table from "../../assets/rozetka_table.svg";
 import "./ProductsPreview.css";
@@ -61,7 +62,9 @@ const ProductsPreview = () => {
       </div>
       <div className="product-cards">
         {productsData.map((product) => (
-          <ProductCard key={product.id} product={product} />
+          <Link to={`/product/${product.id}`} key={product.id}>
+            <ProductCard product={product} />
+          </Link>
         ))}
       </div>
     </div>
