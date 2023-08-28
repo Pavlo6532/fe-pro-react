@@ -1,59 +1,19 @@
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import rozetka_Table from "../../assets/rozetka_table.svg";
 import "./ProductsPreview.css";
+import { API_BASE_URL } from "../../api/Api";
 
 const ProductsPreview = () => {
-  const productsData = [
-    {
-      id: 0,
-      name: "Ноутбук Lenovo Y50-70 Aluminum Black",
-      price: "25,000₴",
-      quantity: 5,
-      status: "Готовий до відправки",
-      image: require("../../assets/lenovo-laptop-y50.png").default,
-    },
-    {
-      id: 1,
-      name: "Ноутбук Lenovo Y50-70 Aluminum Black",
-      price: "25,000₴",
-      quantity: 5,
-      status: "Готовий до відправки",
-      image: require("../../assets/lenovo-laptop-y50.png").default,
-    },
-    {
-      id: 2,
-      name: "Ноутбук Lenovo Y50-70 Aluminum Black",
-      price: "25,000₴",
-      quantity: 5,
-      status: "Готовий до відправки",
-      image: require("../../assets/lenovo-laptop-y50.png").default,
-    },
-    {
-      id: 3,
-      name: "Ноутбук Lenovo Y50-70 Aluminum Black",
-      price: "25,000₴",
-      quantity: 5,
-      status: "Готовий до відправки",
-      image: require("../../assets/lenovo-laptop-y50.png").default,
-    },
-    {
-      id: 4,
-      name: "Ноутбук Lenovo Y50-70 Aluminum Black",
-      price: "25,000₴",
-      quantity: 5,
-      status: "Готовий до відправки",
-      image: require("../../assets/lenovo-laptop-y50.png").default,
-    },
-    {
-      id: 5,
-      name: "Ноутбук Lenovo Y50-70 Aluminum Black",
-      price: "25,000₴",
-      quantity: 5,
-      status: "Готовий до відправки",
-      image: require("../../assets/lenovo-laptop-y50.png").default,
-    },
-  ];
+  const [productsData, setProductsData] = useState([]);
+
+  useEffect(() => {
+    fetch(`${API_BASE_URL}/product`)
+      .then((response) => response.json())
+      .then((data) => setProductsData(data))
+      .catch((error) => console.error("Error fetching data:", error));
+  }, []);
 
   return (
     <div className="products-preview">
@@ -70,5 +30,4 @@ const ProductsPreview = () => {
     </div>
   );
 };
-
 export default ProductsPreview;
