@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
 import rozetkaSVG from "../../assets/rozetka.svg";
@@ -45,7 +45,6 @@ const Login = () => {
 
       if (response.ok) {
         localStorage.setItem("token", data.token);
-        navigate("/productstable");
       } else {
         setErrorMessage("Invalid username or password");
       }
@@ -53,6 +52,13 @@ const Login = () => {
       console.error("Error:", error);
     }
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/productstable");
+    }
+  }, [navigate]);
 
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
