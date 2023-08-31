@@ -90,7 +90,8 @@
 }
 
 .wrapp {
-  min-width: 100vw;
+  min-height: 100vh;
+  padding-bottom: 50px;
 }
 
 .wrapp-info-product img {

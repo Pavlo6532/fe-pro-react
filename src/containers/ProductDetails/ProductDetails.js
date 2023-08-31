@@ -8,26 +8,30 @@ import "./ProductDetails.css";
 const ProductDetails = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/product/${id}`)
-      .then((response) => response.json())
-      .then((data) => setProduct(data))
-      .catch((error) => console.error("Error fetching data:", error));
-
-    document.body.classList.add("product-details-page");
-
-    return () => {
-      document.body.classList.remove("product-details-page");
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/product/${id}`);
+        const data = await response.json();
+        setProduct(data);
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setIsLoading(false);
+      }
     };
+
+    fetchData();
   }, [id]);
 
-  if (!product) {
+  if (isLoading) {
     return <p>Loading...</p>;
   }
 
   return (
-    <div className="wrapp">
+    <div className="wrapp product-details-page">
       <div className="empty-header"></div>
       <div className="logo">
         <img src={rozetka_Table} alt="Logo" className="logo-image" />
