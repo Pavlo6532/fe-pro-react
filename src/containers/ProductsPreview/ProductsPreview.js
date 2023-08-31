@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import rozetka_Table from "../../assets/rozetka_table.svg";
 import "./ProductsPreview.css";
-import { API_BASE_URL } from "../../api/Api";
+import { API_BASE_URL } from "../../constants/constants";
 
 const ProductsPreview = () => {
   const [productsData, setProductsData] = useState([]);

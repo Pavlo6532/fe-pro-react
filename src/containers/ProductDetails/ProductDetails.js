@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { FaArrowLeft, FaCheck } from "react-icons/fa";
-import { API_BASE_URL } from "../../api/Api";
+import { API_BASE_URL } from "../../constants/constants";
 import rozetka_Table from "../../assets/rozetka_table.svg";
 import "./ProductDetails.css";
 
