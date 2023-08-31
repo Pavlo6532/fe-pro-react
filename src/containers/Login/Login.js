@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Login.css";
 import rozetkaSVG from "../../assets/rozetka.svg";
 import Input from "../../components/Input/Input";
@@ -6,6 +7,7 @@ import Button from "../../components/Button/Button";
 import Card from "../../components/Card/Card";
 
 const Login = () => {
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [usernameError, setUsernameError] = useState("");
@@ -51,6 +53,13 @@ const Login = () => {
     }
   };
 
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/productstable");
+    }
+  }, [navigate]);
+
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
     setUsernameError("");
@@ -65,7 +74,7 @@ const Login = () => {
 
   return (
     <Card>
-      <img src={rozetkaSVG} alt="Logo" className="logo" />
+      <img src={rozetkaSVG} alt="Logo" className="logo-home" />
       <form onSubmit={handleLogin}>
         <div className="form-group">
           <Input
