@@ -4,7 +4,7 @@ import rozetka_Table from "../../assets/rozetka_table.svg";
 import "./ProductsTable.css";
 import Table from "../../components/Table/Table";
 import ProductsButton from "../../components/ProductsButton/ProductsButton";
-import { API_BASE_URL } from "../../api/Api";
+import { API_BASE_URL } from "../../constants/constants";
 
 const ProductsTable = () => {
   const navigate = useNavigate();
