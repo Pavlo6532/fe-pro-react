@@ -22,6 +22,19 @@ const ProductsTable = () => {
     }
   }, [navigate]);
 
+  const handleDeleteProduct = (productId) => {
+    fetch(`${API_BASE_URL}/product/${productId}`, {
+      method: "DELETE",
+    })
+      .then((response) => response.json())
+      .then(() => {
+        setProductsData(
+          productsData.filter((product) => product.id !== productId)
+        );
+      })
+      .catch((error) => console.error("Error deleting product:", error));
+  };
+
   return (
     <div className="products-container">
       <div className="table-header">
@@ -37,7 +50,7 @@ const ProductsTable = () => {
           <ProductsButton label="Add Product" isAddButton />
         </div>
       </div>
-      <Table products={productsData} />
+      <Table products={productsData} onDeleteProduct={handleDeleteProduct} />
     </div>
   );
 };

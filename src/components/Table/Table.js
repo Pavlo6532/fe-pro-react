@@ -1,7 +1,30 @@
+import React, { useState } from "react";
 import { FaRegTrashAlt, FaRegEdit } from "react-icons/fa";
 import "./Table.css";
+import DeleteConfirmationModal from "../DeleteConfirmationModal/DeleteConfirmationModal";
 
-const Table = ({ products }) => {
+const Table = ({ products, onDeleteProduct }) => {
+  const [selectedProductId, setSelectedProductId] = useState(null);
+  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
+
+  const handleDeleteClick = (productId) => {
+    setSelectedProductId(productId);
+    setDeleteModalOpen(true);
+  };
+
+  const handleDeleteConfirm = () => {
+    if (selectedProductId) {
+      onDeleteProduct(selectedProductId);
+      setDeleteModalOpen(false);
+      setSelectedProductId(null);
+    }
+  };
+
+  const handleDeleteCancel = () => {
+    setDeleteModalOpen(false);
+    setSelectedProductId(null);
+  };
+
   return (
     <table className="custom-table">
       <thead>
@@ -24,11 +47,20 @@ const Table = ({ products }) => {
             <td>{product.price}</td>
             <td>
               <FaRegEdit className="icon" />
-              <FaRegTrashAlt className="icon" />
+              <FaRegTrashAlt
+                className="icon"
+                onClick={() => handleDeleteClick(product.id)}
+              />
             </td>
           </tr>
         ))}
       </tbody>
+
+      <DeleteConfirmationModal
+        isOpen={isDeleteModalOpen}
+        onCancel={handleDeleteCancel}
+        onConfirm={handleDeleteConfirm}
+      />
     </table>
   );
 };
