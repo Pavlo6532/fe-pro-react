@@ -11,28 +11,44 @@ const ProductsTable = () => {
   const [productsData, setProductsData] = useState([]);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      navigate("/login");
-    } else {
-      fetch(`${API_BASE_URL}/product`)
-        .then((response) => response.json())
-        .then((data) => setProductsData(data))
-        .catch((error) => console.error("Error fetching data:", error));
-    }
+    const fetchProducts = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        navigate("/login");
+      } else {
+        try {
+          const response = await fetch(`${API_BASE_URL}/product`);
+          if (response.ok) {
+            const data = await response.json();
+            setProductsData(data);
+          } else {
+            console.error("Error fetching data:", response.statusText);
+          }
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      }
+    };
+
+    fetchProducts();
   }, [navigate]);
 
-  const handleDeleteProduct = (productId) => {
-    fetch(`${API_BASE_URL}/product/${productId}`, {
-      method: "DELETE",
-    })
-      .then((response) => response.json())
-      .then(() => {
-        setProductsData(
-          productsData.filter((product) => product.id !== productId)
+  const handleDeleteProduct = async (productId) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/product/${productId}`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        setProductsData((prevProducts) =>
+          prevProducts.filter((product) => product.id !== productId)
         );
-      })
-      .catch((error) => console.error("Error deleting product:", error));
+      } else {
+        console.error("Error deleting product:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error deleting product:", error);
+    }
   };
 
   return (
