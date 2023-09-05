@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import rozetka_Table from "../../assets/rozetka_table.svg";
 import "./ProductsTable.css";
@@ -53,7 +53,10 @@ const ProductsTable = () => {
       });
 
       if (response.ok) {
-        setIsLoaded(false);
+        const updatedProducts = productsData.filter(
+          (product) => product.id !== productId
+        );
+        setProductsData(updatedProducts);
       } else {
         console.error("Error deleting product:", response.statusText);
       }
@@ -65,6 +68,27 @@ const ProductsTable = () => {
   const handleOpenAddProductModal = () => {
     setModalOpen(true);
     setModalTitle("Add product");
+  };
+
+  const handleAddProduct = async (newProduct) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/product`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newProduct),
+      });
+
+      if (response.ok) {
+        setIsLoaded(false);
+        setModalOpen(false);
+      } else {
+        console.error("Error adding product:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error adding product:", error);
+    }
   };
 
   return (
@@ -101,6 +125,7 @@ const ProductsTable = () => {
       <ProductModal
         isOpen={isModalOpen}
         onClose={() => setModalOpen(false)}
+        onSubmit={handleAddProduct}
         initialValues={{
           category: "",
           name: "",

@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { FaRegTrashAlt, FaRegEdit } from "react-icons/fa";
 import "./Table.css";
 import DeleteConfirmationModal from "../DeleteConfirmationModal/DeleteConfirmationModal";
-import ProductsModal from "../ProductModal/ProductModal";
+import ProductModal from "../ProductModal/ProductModal";
 
 const Table = ({ products, onDeleteProduct }) => {
   const [selectedProductId, setSelectedProductId] = useState(null);
@@ -71,7 +71,7 @@ const Table = ({ products, onDeleteProduct }) => {
         onConfirm={handleDeleteConfirm}
       />
 
-      <ProductsModal
+      <ProductModal
         isOpen={isEditModalOpen}
         onClose={() => setEditModalOpen(false)}
         initialValues={{

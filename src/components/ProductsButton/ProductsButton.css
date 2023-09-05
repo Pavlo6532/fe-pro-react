@@ -6,7 +6,9 @@
   border-radius: 5px;
   cursor: pointer;
   display: flex;
+  justify-content: center;
   align-items: center;
+  max-width: 179px;
 }
 
 .add-button {
@@ -17,7 +19,9 @@
   border-radius: 5px;
   cursor: pointer;
   display: flex;
+  justify-content: center;
   align-items: center;
+  max-width: 179px;
 }
 
 .button-icon {
