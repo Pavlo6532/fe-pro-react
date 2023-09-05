@@ -9,6 +9,7 @@ import { API_BASE_URL } from "../../constants/constants";
 const ProductsTable = () => {
   const navigate = useNavigate();
   const [productsData, setProductsData] = useState([]);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -21,6 +22,7 @@ const ProductsTable = () => {
           if (response.ok) {
             const data = await response.json();
             setProductsData(data);
+            setIsLoaded(true);
           } else {
             console.error("Error fetching data:", response.statusText);
           }
@@ -31,7 +33,7 @@ const ProductsTable = () => {
     };
 
     fetchProducts();
-  }, [navigate]);
+  }, [navigate, isLoaded]);
 
   const handleDeleteProduct = async (productId) => {
     try {
@@ -40,9 +42,7 @@ const ProductsTable = () => {
       });
 
       if (response.ok) {
-        setProductsData((prevProducts) =>
-          prevProducts.filter((product) => product.id !== productId)
-        );
+        setIsLoaded(false);
       } else {
         console.error("Error deleting product:", response.statusText);
       }
@@ -66,7 +66,11 @@ const ProductsTable = () => {
           <ProductsButton label="Add Product" isAddButton />
         </div>
       </div>
-      <Table products={productsData} onDeleteProduct={handleDeleteProduct} />
+      {isLoaded ? (
+        <Table products={productsData} onDeleteProduct={handleDeleteProduct} />
+      ) : (
+        <p>Loading...</p>
+      )}
     </div>
   );
 };

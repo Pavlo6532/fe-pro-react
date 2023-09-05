@@ -5,6 +5,7 @@ import rozetkaSVG from "../../assets/rozetka.svg";
 import Input from "../../components/Input/Input";
 import Button from "../../components/Button/Button";
 import Card from "../../components/Card/Card";
+import { PRODUCT_TABLE_ROUTE } from "../../constants/constants";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -56,7 +57,7 @@ const Login = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      navigate("/productstable");
+      navigate(PRODUCT_TABLE_ROUTE);
     }
   }, [navigate]);
 
