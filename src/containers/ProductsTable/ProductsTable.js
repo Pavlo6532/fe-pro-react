@@ -5,11 +5,22 @@ import "./ProductsTable.css";
 import Table from "../../components/Table/Table";
 import ProductsButton from "../../components/ProductsButton/ProductsButton";
 import { API_BASE_URL } from "../../constants/constants";
+import ProductModal from "../../components/ProductModal/ProductModal";
+import { css } from "@emotion/react";
+import { RingLoader } from "react-spinners";
+
+const override = css`
+  display: block;
+  margin: 0 auto;
+  border-color: red;
+`;
 
 const ProductsTable = () => {
   const navigate = useNavigate();
   const [productsData, setProductsData] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [modalTitle, setModalTitle] = useState("Add product");
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -51,6 +62,11 @@ const ProductsTable = () => {
     }
   };
 
+  const handleOpenAddProductModal = () => {
+    setModalOpen(true);
+    setModalTitle("Add product");
+  };
+
   return (
     <div className="products-container">
       <div className="table-header">
@@ -63,14 +79,37 @@ const ProductsTable = () => {
             label="Preview"
             onClick={() => navigate("/product-preview")}
           />
-          <ProductsButton label="Add Product" isAddButton />
+          <ProductsButton
+            label="Add Product"
+            isAddButton
+            onClick={handleOpenAddProductModal}
+          />
         </div>
       </div>
       {isLoaded ? (
         <Table products={productsData} onDeleteProduct={handleDeleteProduct} />
       ) : (
-        <p>Loading...</p>
+        <div className="loading-spinner">
+          <RingLoader
+            css={override}
+            size={150}
+            color={"#123abc"}
+            loading={!isLoaded}
+          />
+        </div>
       )}
+      <ProductModal
+        isOpen={isModalOpen}
+        onClose={() => setModalOpen(false)}
+        initialValues={{
+          category: "",
+          name: "",
+          quantity: "",
+          price: "",
+          description: "",
+        }}
+        title={modalTitle}
+      />
     </div>
   );
 };
