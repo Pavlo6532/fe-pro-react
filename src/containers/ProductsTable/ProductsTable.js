@@ -9,18 +9,47 @@ import { API_BASE_URL } from "../../constants/constants";
 const ProductsTable = () => {
   const navigate = useNavigate();
   const [productsData, setProductsData] = useState([]);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      navigate("/login");
-    } else {
-      fetch(`${API_BASE_URL}/product`)
-        .then((response) => response.json())
-        .then((data) => setProductsData(data))
-        .catch((error) => console.error("Error fetching data:", error));
+    const fetchProducts = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        navigate("/login");
+      } else {
+        try {
+          const response = await fetch(`${API_BASE_URL}/product`);
+          if (response.ok) {
+            const data = await response.json();
+            setProductsData(data);
+            setIsLoaded(true);
+          } else {
+            console.error("Error fetching data:", response.statusText);
+          }
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      }
+    };
+
+    fetchProducts();
+  }, [navigate, isLoaded]);
+
+  const handleDeleteProduct = async (productId) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/product/${productId}`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        setIsLoaded(false);
+      } else {
+        console.error("Error deleting product:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error deleting product:", error);
     }
-  }, [navigate]);
+  };
 
   return (
     <div className="products-container">
@@ -37,7 +66,11 @@ const ProductsTable = () => {
           <ProductsButton label="Add Product" isAddButton />
         </div>
       </div>
-      <Table products={productsData} />
+      {isLoaded ? (
+        <Table products={productsData} onDeleteProduct={handleDeleteProduct} />
+      ) : (
+        <p>Loading...</p>
+      )}
     </div>
   );
 };
