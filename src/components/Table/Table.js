@@ -2,14 +2,20 @@ import React, { useState } from "react";
 import { FaRegTrashAlt, FaRegEdit } from "react-icons/fa";
 import "./Table.css";
 import DeleteConfirmationModal from "../DeleteConfirmationModal/DeleteConfirmationModal";
+import ProductsModal from "../ProductModal/ProductModal";
 
 const Table = ({ products, onDeleteProduct }) => {
   const [selectedProductId, setSelectedProductId] = useState(null);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [isEditModalOpen, setEditModalOpen] = useState(false);
 
   const handleDeleteClick = (productId) => {
     setSelectedProductId(productId);
     setDeleteModalOpen(true);
+  };
+
+  const handleEditClick = () => {
+    setEditModalOpen(true);
   };
 
   const handleDeleteConfirm = () => {
@@ -46,7 +52,10 @@ const Table = ({ products, onDeleteProduct }) => {
             <td>{product.quantity}</td>
             <td>{product.price}</td>
             <td>
-              <FaRegEdit className="icon" />
+              <FaRegEdit
+                className="icon"
+                onClick={() => handleEditClick(product.id)}
+              />
               <FaRegTrashAlt
                 className="icon"
                 onClick={() => handleDeleteClick(product.id)}
@@ -60,6 +69,19 @@ const Table = ({ products, onDeleteProduct }) => {
         isOpen={isDeleteModalOpen}
         onCancel={handleDeleteCancel}
         onConfirm={handleDeleteConfirm}
+      />
+
+      <ProductsModal
+        isOpen={isEditModalOpen}
+        onClose={() => setEditModalOpen(false)}
+        initialValues={{
+          category: "",
+          name: "",
+          quantity: "",
+          price: "",
+          description: "",
+        }}
+        title="Edit product"
       />
     </table>
   );
