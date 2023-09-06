@@ -27,23 +27,26 @@ const ProductsTable = () => {
       const token = localStorage.getItem("token");
       if (!token) {
         navigate("/login");
-      } else {
-        try {
-          const response = await fetch(`${API_BASE_URL}/product`);
-          if (response.ok) {
-            const data = await response.json();
-            setProductsData(data);
-            setIsLoaded(true);
-          } else {
-            console.error("Error fetching data:", response.statusText);
-          }
-        } catch (error) {
-          console.error("Error fetching data:", error);
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/product`);
+        if (response.ok) {
+          const data = await response.json();
+          setProductsData(data);
+          setIsLoaded(true);
+        } else {
+          console.error("Error fetching data:", response.statusText);
         }
+      } catch (error) {
+        console.error("Error fetching data:", error);
       }
     };
 
-    fetchProducts();
+    if (!isLoaded) {
+      fetchProducts();
+    }
   }, [navigate, isLoaded]);
 
   const handleDeleteProduct = async (productId) => {
@@ -117,7 +120,7 @@ const ProductsTable = () => {
           <RingLoader
             css={override}
             size={150}
-            color={"#123abc"}
+            color="#123abc"
             loading={!isLoaded}
           />
         </div>
