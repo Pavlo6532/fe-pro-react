@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import rozetka_Table from "../../assets/rozetka_table.svg";
 import "./ProductsTable.css";
@@ -21,33 +21,36 @@ const ProductsTable = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState("Add product");
+  const [selectedProductForEdit, setSelectedProductForEdit] = useState(null);
+  const [isEditModalOpen, setEditModalOpen] = useState(false);
+  const [error, setError] = useState(null);
+
+  const fetchProducts = useCallback(async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/product`);
+      if (response.ok) {
+        const data = await response.json();
+        setProductsData(data);
+        setIsLoaded(true);
+      } else {
+        setError("Error fetching data");
+      }
+    } catch (error) {
+      setError("Error fetching data");
+    }
+  }, [navigate]);
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        navigate("/login");
-        return;
-      }
-
-      try {
-        const response = await fetch(`${API_BASE_URL}/product`);
-        if (response.ok) {
-          const data = await response.json();
-          setProductsData(data);
-          setIsLoaded(true);
-        } else {
-          console.error("Error fetching data:", response.statusText);
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
     if (!isLoaded) {
       fetchProducts();
     }
-  }, [navigate, isLoaded]);
+  }, [isLoaded, fetchProducts]);
 
   const handleDeleteProduct = async (productId) => {
     try {
@@ -61,16 +64,18 @@ const ProductsTable = () => {
         );
         setProductsData(updatedProducts);
       } else {
-        console.error("Error deleting product:", response.statusText);
+        setError("Error deleting product");
       }
     } catch (error) {
-      console.error("Error deleting product:", error);
+      setError("Error deleting product");
     }
   };
 
   const handleOpenAddProductModal = () => {
     setModalOpen(true);
     setModalTitle("Add product");
+    setSelectedProductForEdit(null);
+    setEditModalOpen(false);
   };
 
   const handleAddProduct = async (newProduct) => {
@@ -86,11 +91,37 @@ const ProductsTable = () => {
       if (response.ok) {
         setIsLoaded(false);
         setModalOpen(false);
+        fetchProducts();
       } else {
-        console.error("Error adding product:", response.statusText);
+        setError("Error adding product");
       }
     } catch (error) {
-      console.error("Error adding product:", error);
+      setError("Error adding product");
+    }
+  };
+
+  const handleEditProduct = async (editedProduct) => {
+    try {
+      const response = await fetch(
+        `${API_BASE_URL}/product/${editedProduct.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(editedProduct),
+        }
+      );
+
+      if (response.ok) {
+        setIsLoaded(false);
+        setEditModalOpen(false);
+        fetchProducts();
+      } else {
+        setError("Error editing product");
+      }
+    } catch (error) {
+      setError("Error editing product");
     }
   };
 
@@ -114,7 +145,17 @@ const ProductsTable = () => {
         </div>
       </div>
       {isLoaded ? (
-        <Table products={productsData} onDeleteProduct={handleDeleteProduct} />
+        <Table
+          products={productsData}
+          onDeleteProduct={handleDeleteProduct}
+          onEditProduct={handleEditProduct}
+          onEditClick={(product) => {
+            setSelectedProductForEdit(product);
+            setEditModalOpen(true);
+          }}
+        />
+      ) : error ? (
+        <div className="error-message">{error}</div>
       ) : (
         <div className="loading-spinner">
           <RingLoader
@@ -137,6 +178,13 @@ const ProductsTable = () => {
           description: "",
         }}
         title={modalTitle}
+      />
+      <ProductModal
+        isOpen={isEditModalOpen}
+        onClose={() => setEditModalOpen(false)}
+        onSubmit={handleEditProduct}
+        initialValues={selectedProductForEdit}
+        title="Edit product"
       />
     </div>
   );
